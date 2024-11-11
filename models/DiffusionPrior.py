@@ -1,87 +1,64 @@
 import torch
-from dalle2_pytorch import DALLE2, DiffusionPriorNetwork, DiffusionPrior, Unet, Decoder, OpenAIClipAdapter
+from dalle2_pytorch import DiffusionPrior, DiffusionPriorNetwork, OpenAIClipAdapter
+from dalle2_pytorch.trainer import DiffusionPriorTrainer
 
-# openai pretrained clip - defaults to ViT-B/32
+def load_diffusion_model(dprior_path, clip):
 
-clip = OpenAIClipAdapter()
+    prior_network = DiffusionPriorNetwork(
+        dim=768,
+        depth=24,
+        dim_head=64,
+        heads=32,
+        normformer=True,
+        attn_dropout=5e-2,
+        ff_dropout=5e-2,
+        num_time_embeds=1,
+        num_image_embeds=1,
+        num_text_embeds=1,
+        num_timesteps=1000,
+        ff_mult=4
+    )
 
-# mock data
+    diffusion_prior = DiffusionPrior(
+        net=prior_network,
+        clip=clip,
+        image_embed_dim=768,
+        timesteps=1000,
+        cond_drop_prob=0.1,
+        loss_type="l2",
+        condition_on_text_encodings=True,
 
-text = torch.randint(0, 49408, (4, 256)).cuda()
-images = torch.randn(4, 3, 256, 256).cuda()
+    )
 
-# loss = clip(
-#     text,
-#     images,
-#     return_loss = True              # needs to be set to True to return contrastive loss
-# )
+    trainer = DiffusionPriorTrainer(
+        diffusion_prior=diffusion_prior,
+        lr=1.1e-4,
+        wd=6.02e-2,
+        max_grad_norm=0.5,
+        amp=False,
+        group_wd_params=True,
+        use_ema=True,
+        # device=device,
+        device=diffusion_prior.device(),
+        accelerator=None,
+    )
 
-# prior networks (with transformer)
+    trainer.load(dprior_path)
 
-prior_network = DiffusionPriorNetwork(
-    dim = 512,
-    depth = 6,
-    dim_head = 64,
-    heads = 8
-).cuda()
+    return diffusion_prior, trainer
 
-diffusion_prior = DiffusionPrior(
-    net = prior_network,
-    clip = clip,
-    timesteps = 100,
-    cond_drop_prob = 0.2
-).cuda()
+if __name__ == "__main__":
+    # openai pretrained clip - defaults to ViT-B/32
+    clip = OpenAIClipAdapter()
 
-loss = diffusion_prior(text, images)
-print(loss)
-loss.backward()
+    # Load Diffusion Prior Model
+    dprior_path = ""
+    diffusion_prior, diffusion_prior_trainer = load_diffusion_model(dprior_path, clip)
 
-# do above for many steps ...
 
-# decoder (with unet)
-
-# unet1 = Unet(
-#     dim = 128,
-#     image_embed_dim = 512,
-#     cond_dim = 128,
-#     channels = 3,
-#     dim_mults=(1, 2, 4, 8),
-#     text_embed_dim = 512,
-#     cond_on_text_encodings = True  # set to True for any unets that need to be conditioned on text encodings (ex. first unet in cascade)
-# ).cuda()
-
-# unet2 = Unet(
-#     dim = 16,
-#     image_embed_dim = 512,
-#     cond_dim = 128,
-#     channels = 3,
-#     dim_mults = (1, 2, 4, 8, 16)
-# ).cuda()
-
-# decoder = Decoder(
-#     unet = (unet1, unet2),
-#     image_sizes = (128, 256),
-#     clip = clip,
-#     timesteps = 1000,
-#     sample_timesteps = (250, 27),
-#     image_cond_drop_prob = 0.1,
-#     text_cond_drop_prob = 0.5
-# ).cuda()
-
-# for unet_number in (1, 2):
-#     loss = decoder(images, text = text, unet_number = unet_number) # this can optionally be decoder(images, text) if you wish to condition on the text encodings as well, though it was hinted in the paper it didn't do much
-#     loss.backward()
-
-# # do above for many steps
-
-# dalle2 = DALLE2(
-#     prior = diffusion_prior,
-#     decoder = decoder
-# )
-
-# images = dalle2(
-#     ['a butterfly trying to escape a tornado'],
-#     cond_scale = 2. # classifier free guidance strength (> 1 would strengthen the condition)
-# )
-
-# save your image (in this example, of size 256x256)
+    # Test
+    # tokenize the text
+    tokenized_text = clip.tokenize("<your amazing prompt>")
+    # predict an embedding
+    predicted_embedding = diffusion_prior.sample(tokenized_text, n_samples_per_batch=2, cond_scale=1.0)
+    # predicted_embedding = diffusion_prior_trainer.sample(tokenized_text, n_samples_per_batch=2, cond_scale=1.0)   # Could work as well?
