@@ -82,6 +82,8 @@ if __name__ == '__main__':
     ])
 
     # Set up the dataset and DataLoader
+    # "D:/Finetuning_DALLE/Finetuning4TextGeneration/Datasets/0/00000"      Will's dataset path
+    # "/w/340/michaelyuan/Finetuning4TextGeneration/Datasets/MARIO-10M/0/00000"    Michael's dataset path
     root_dir = "/w/340/michaelyuan/Finetuning4TextGeneration/Datasets/MARIO-10M/0/00000"    # Relative dir like "/Datasets/..." don't work here, not sure why
     dataset = ImageTextDataset(root_dir=root_dir, transform=transform, tokenizer=tokenizer)
     data_loader = DataLoader(dataset, batch_size=4, shuffle=True)

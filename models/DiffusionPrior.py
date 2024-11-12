@@ -3,6 +3,7 @@ from dalle2_pytorch import DiffusionPrior, DiffusionPriorNetwork, OpenAIClipAdap
 from dalle2_pytorch.trainer import DiffusionPriorTrainer
 
 def load_diffusion_model(dprior_path, clip):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     prior_network = DiffusionPriorNetwork(
         dim=768,
@@ -38,8 +39,8 @@ def load_diffusion_model(dprior_path, clip):
         amp=False,
         group_wd_params=True,
         use_ema=True,
-        # device=device,
-        device=diffusion_prior.device(),
+        device=device,
+        #device=diffusion_prior.device(),
         accelerator=None,
     )
 
@@ -49,10 +50,10 @@ def load_diffusion_model(dprior_path, clip):
 
 if __name__ == "__main__":
     # openai pretrained clip - defaults to ViT-B/32
-    clip = OpenAIClipAdapter()
+    clip = OpenAIClipAdapter("ViT-L/14")
 
     # Load Diffusion Prior Model
-    dprior_path = ""
+    dprior_path = ""  
     diffusion_prior, diffusion_prior_trainer = load_diffusion_model(dprior_path, clip)
 
 
