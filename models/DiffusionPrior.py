@@ -40,7 +40,6 @@ def load_diffusion_model(dprior_path, clip):
         group_wd_params=True,
         use_ema=True,
         device=device,
-        #device=diffusion_prior.device(),
         accelerator=None,
     )
 
@@ -50,7 +49,7 @@ def load_diffusion_model(dprior_path, clip):
 
 if __name__ == "__main__":
     # openai pretrained clip - defaults to ViT-B/32
-    clip = OpenAIClipAdapter("ViT-L/14")
+    clip = OpenAIClipAdapter()
 
     # Load Diffusion Prior Model
     dprior_path = ""  

@@ -5,8 +5,6 @@ from torchvision import transforms
 from dalle2_pytorch import DALLE2, Unet, Decoder, CLIP, DecoderTrainer, OpenAIClipAdapter
 from dalle2_pytorch.dataloaders import ImageEmbeddingDataset, create_image_embedding_dataloader
 
-from tqdm import tqdm
-
 # Initialize CLIP
 # openai pretrained clip - defaults to ViT-B/32
 clip = OpenAIClipAdapter()
@@ -59,7 +57,7 @@ def img_preproc(img):
         # Optionally, you can add normalization here as well
         # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),  # Example normalization
     ])
-    return transform(img)
+    return transform(img)   
 
 # Dataset and DataLoader setup
 dataset = ImageEmbeddingDataset(
@@ -74,42 +72,33 @@ dataset = ImageEmbeddingDataset(
 dataloader = DataLoader(
     dataset,
     batch_size=32,  # Adjust based on your memory and needs
+    # shuffle=True,   # Shuffle the dataset
     num_workers=1,  # Number of workers for parallel data loading
     pin_memory=True,  # Set to True for faster data transfer to GPU (if using GPU)
 )
 
 #Training loop
 print("Start training:")
-num_epochs = 1
-for epoch in range(num_epochs):  # Example epoch count, adjust as necessary
-    with tqdm(total=313, desc=f"Epoch {epoch+1}/{num_epochs}", unit="batch") as pbar:
-        for img, emb in dataloader:
-            # Transfer batch to GPU
-            img = img.cuda()
-            img_emb = emb["img"].cuda()  # Assuming text embeddings are in emb["img"], update key if different
+for epoch in range(1):  # Example epoch count, adjust as necessary
+    for img, emb in dataloader:
+        # Transfer batch to GPU
+        img = img.cuda()
+        img_emb = emb["img"].cuda()  # Assuming text embeddings are in emb["img"], update key if different
 
-            # Train each U-Net in the decoder
-            for unet_number in (1, 2):
-                # Compute loss
-                loss = decoder_trainer(
-                    image=img,
-                    image_embed = img_emb,
-                    unet_number=unet_number,
-                    max_batch_size=4
-                )
+        # Train each U-Net in the decoder
+        for unet_number in (1, 2):
+            # Compute loss
+            loss = decoder_trainer(
+                image=img,
+                image_embed = img_emb,
+                unet_number=unet_number,
+                max_batch_size=4
+            )
 
-                # Update the specific U-Net with EMA
-                decoder_trainer.update(unet_number)
+            # Update the specific U-Net with EMA
+            decoder_trainer.update(unet_number)
 
-            # Update the progress bar
-            pbar.update(1)
-            pbar.set_postfix({"Loss": loss})
-
-# Define the path for saving the model
-model_path = "./PretrainedModels/decoder_model.pth"
-
-# Save the model's state dictionary
-torch.save(decoder.state_dict(), model_path)
+        print(f'Epoch [{epoch+1}] - Loss: {loss:.4f}')
 
 # Sampling from the trained model (after sufficient training)
 mock_image_embed = torch.randn(32, 512).cuda()  # Mock image embeddings, replace with actual embeddings

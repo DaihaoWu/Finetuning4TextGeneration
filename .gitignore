@@ -1,1 +1,5 @@
-Datasets/
+Datasets/MARIO-10M
+Datasets/MSCOCO
+Datasets/mscoco.parquet
+Datasets/clip-retrieval.sh
+PretrainedModels/
