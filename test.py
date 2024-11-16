@@ -48,7 +48,7 @@ decoder_trainer = DecoderTrainer(
 )
 
 # Define the path for saving the model
-model_path = "./PretrainedModels/decoder_model.pth"
+model_path = "./PretrainedModels/decoder2_50k_checkpoint_313.pth"
 # Load the saved state dictionary into the model
 decoder.load_state_dict(torch.load(model_path))
 decoder.eval()  # Set to evaluation mode if not training
@@ -62,6 +62,7 @@ print(generated_images.shape)  # Expected output shape: (32, 3, 256, 256)
 
 import matplotlib.pyplot as plt
 import torchvision.transforms as T
+import os
 
 # Assuming `generated_images` is a tensor with shape (32, 3, 256, 256)
 # Move to CPU if needed
@@ -79,6 +80,7 @@ images_to_show = generated_images[:num_images_to_show]
 fig, axes = plt.subplots(3, 3, figsize=(10, 10))  # 3x3 grid
 axes = axes.flatten()
 
+model_id = os.path.splitext(os.path.basename(model_path))[0]
 # Display each image
 for img, ax in zip(images_to_show, axes):
     # Permute dimensions from (C, H, W) to (H, W, C) for plotting
@@ -87,5 +89,5 @@ for img, ax in zip(images_to_show, axes):
     ax.axis("off")  # Hide axes
 
 plt.tight_layout()
-plt.savefig("./plots/decoder_samples.jpg")
+plt.savefig(f"./plots/{model_id}_samples.jpg")
 plt.show()

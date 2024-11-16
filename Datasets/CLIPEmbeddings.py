@@ -11,7 +11,7 @@ processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 model.eval()
 
 # WebDataset path
-dataset_path = "./MSCOCO/{00001..00059}.tar"    # should be {00000..00059}
+dataset_path = "./MSCOCO/{00002..00059}.tar"    # should be {00000..00059}
 
 # Directory to save embeddings
 image_emb_dir = "./MSCOCO/image_embeddings"
@@ -29,11 +29,12 @@ dataset = wds.WebDataset(dataset_path).decode("pil").to_tuple("jpg", "txt", "__k
 for image, text, key in tqdm(dataset, desc="Processing Shards"):
     # Extract shard number and index from key
     shard_num, index = key[:5], key[5:]
-    print(key, shard_num, index)
+    # print(key, shard_num, index)
     index = int(index)
 
     # Initialize new shard if necessary
     if current_shard_num != shard_num:
+        print(f"Processing Shard {shard_num}")
         # Save previous shard's embeddings
         if current_shard_num is not None:
             np.save(f"{image_emb_dir}/img_emb_{current_shard_num}.npy", np.array(image_embeddings))

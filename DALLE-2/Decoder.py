@@ -63,7 +63,7 @@ def img_preproc(img):
 
 # Dataset and DataLoader setup
 dataset = ImageEmbeddingDataset(
-    urls="Datasets/MSCOCO/{00000..00000}.tar",
+    urls="Datasets/MSCOCO/{00000..00004}.tar",
     img_embedding_folder_url="Datasets/MSCOCO/image_embeddings",
     index_width=4,
     shuffle_shards=True,
@@ -79,10 +79,16 @@ dataloader = DataLoader(
 )
 
 #Training loop
-print("Start training:")
+from math import ceil
 num_epochs = 1
+total_length = ceil(50000/dataloader.batch_size)
+checkpoint_interval = ceil(10000/dataloader.batch_size)
+print(f"Save every {checkpoint_interval} batches")
+batch_count = 0
+
+print("Start training:")
 for epoch in range(num_epochs):  # Example epoch count, adjust as necessary
-    with tqdm(total=313, desc=f"Epoch {epoch+1}/{num_epochs}", unit="batch") as pbar:
+    with tqdm(total=total_length, desc=f"Epoch {epoch+1}/{num_epochs}", unit="batch") as pbar:
         for img, emb in dataloader:
             # Transfer batch to GPU
             img = img.cuda()
@@ -104,14 +110,21 @@ for epoch in range(num_epochs):  # Example epoch count, adjust as necessary
             # Update the progress bar
             pbar.update(1)
             pbar.set_postfix({"Loss": loss})
+            batch_count += 1
+
+            # save checkpoint every 10,000 datapoint
+            if batch_count % checkpoint_interval == 0:
+                checkpoint_path = f"./PretrainedModels/decoder2_50k_checkpoint_{batch_count}.pth"
+                torch.save(decoder.state_dict(), checkpoint_path)
+                print(f"Checkpoint saved at batch {batch_count} to {checkpoint_path}")
 
 # Define the path for saving the model
-model_path = "./PretrainedModels/decoder_model.pth"
+final_model_path = "./PretrainedModels/decoder2_50k.pth"
 
 # Save the model's state dictionary
-torch.save(decoder.state_dict(), model_path)
+torch.save(decoder.state_dict(), final_model_path)
 
 # Sampling from the trained model (after sufficient training)
-mock_image_embed = torch.randn(32, 512).cuda()  # Mock image embeddings, replace with actual embeddings
-generated_images = decoder_trainer.sample(image_embed=mock_image_embed)
-print(generated_images.shape)  # Expected output shape: (32, 3, 256, 256)
+# mock_image_embed = torch.randn(32, 512).cuda()  # Mock image embeddings, replace with actual embeddings
+# generated_images = decoder_trainer.sample(image_embed=mock_image_embed)
+# print(generated_images.shape)  # Expected output shape: (32, 3, 256, 256)
