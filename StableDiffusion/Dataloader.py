@@ -41,7 +41,7 @@ class ImageTextDataset(Dataset):
 
     def __getitem__(self, idx):
         image_path, caption_path = self.data_paths[idx]
-
+        
         # Load the image
         image = Image.open(image_path).convert('RGB')
         if self.transform:
@@ -64,9 +64,16 @@ class ImageTextDataset(Dataset):
             # Extract tokenized tensor
             text_tokens = tokenized_text["input_ids"].squeeze()
 
-            return text_tokens, image
+            return {
+            "text_tokens": text_tokens,  # Tokenized text
+            "text": text,  # Original text
+            "image": image  # Processed image
+            }
         else:
-            return text, image
+            return {
+            "text": text,  # Original text
+            "image": image  # Processed image
+            }
 
 
 if __name__ == '__main__':
@@ -85,5 +92,9 @@ if __name__ == '__main__':
     # "D:/Finetuning_DALLE/Finetuning4TextGeneration/Datasets/0/00000"      Will's dataset path
     # "/w/340/michaelyuan/Finetuning4TextGeneration/Datasets/MARIO-10M/0/00000"    Michael's dataset path
     root_dir = "/w/340/michaelyuan/Finetuning4TextGeneration/Datasets/MARIO-10M/0/00000"    # Relative dir like "/Datasets/..." don't work here, not sure why
-    dataset = ImageTextDataset(root_dir=root_dir, transform=transform, tokenizer=tokenizer)
+    dataset = ImageTextDataset(root_dir=root_dir, transform=transform, tokenizer=None)
     data_loader = DataLoader(dataset, batch_size=4, shuffle=True)
+
+    for batch in data_loader:
+        print(batch)
+        break
