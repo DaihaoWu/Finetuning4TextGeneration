@@ -1,17 +1,16 @@
+from diffusers import StableDiffusionPipeline
 import torch
 from PIL import Image
-from diffusers import StableDiffusionPipeline
+import os
 
-model_id = "CompVis/stable-diffusion-v1-4"
-device = "cuda"
+# input the path to the model
+model_path = "sd-texted-model-lora"
+pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", torch_dtype=torch.float16)
+pipe.unet.load_attn_procs(model_path)
 
-
-pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
-pipe = pipe.to(device)
-
-# Change the prompt here for different results
 prompt = "a photo of a cat holding a sign saying hello world"
 
+pipe.to("cuda")
 def concatenate_images(images):
     widths, heights = zip(*(i.size for i in images))
     max_width = max(widths)
@@ -24,11 +23,13 @@ def concatenate_images(images):
     return new_image
 
 images = []
-
 for _ in range(4):
-    image = pipe(prompt).images[0]  
+    image = pipe(prompt, num_inference_steps=30, guidance_scale=7.5).images[0]
     images.append(image)
+    output_dir = f"{model_path}\InferenceImages"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 final_image = concatenate_images(images)
 
 # save the final image and change the name of the file here
-final_image.save("D:\Finetuning_DALLE\Finetuning4TextGeneration\StableDiffusionBaselinePics\cat_hello_world.png")
+final_image.save(f"{model_path}\InferenceImages\combined_image.png")
