@@ -9,3 +9,4 @@ Pretrained_pth
 wandb
 Datasets/Datasets_converter.py
 DALLE-2/DiffusionPrior.py
+diffusers\examples\text_to_image\sd-texted-model-lora_2\checkpoint-5000
