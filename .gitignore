@@ -3,3 +3,9 @@ Datasets/MSCOCO
 Datasets/mscoco.parquet
 Datasets/clip-retrieval.sh
 PretrainedModels/
+Datasets/
+FT4TEXT/
+Pretrained_pth
+wandb
+Datasets/Datasets_converter.py
+DALLE-2/DiffusionPrior.py
