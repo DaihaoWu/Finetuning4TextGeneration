@@ -3,10 +3,6 @@ Datasets/MSCOCO
 Datasets/mscoco.parquet
 Datasets/clip-retrieval.sh
 PretrainedModels/
-Datasets/
-FT4TEXT/
-Pretrained_pth
-wandb
-Datasets/Datasets_converter.py
-DALLE-2/DiffusionPrior.py
-diffusers\examples\text_to_image\sd-texted-model-lora_2\checkpoint-5000
+Datasets/processed_mario_10m
+Datasets/enhanced_mario_10m
+
