@@ -5,4 +5,8 @@ Datasets/clip-retrieval.sh
 PretrainedModels/
 Datasets/processed_mario_10m
 Datasets/enhanced_mario_10m
-
+Datasets/generation
+Datasets/MARIOEval
+diffuser_docs
+MaskTextSpotterV3
+Evaluation/src
