@@ -140,4 +140,8 @@ For questions or collaborations, feel free to reach out to:
 	•	Name: Michael Yuan
 	•	Email: michaelyuan@cs.toronto.edu
 	•	GitHub: MichaelYuan2
+	•	Name: Daihao Wu
+	•	Email: daihao.wu@mail.utoronto.ca
+	•	GitHub: DaihaoWu
+
 
