@@ -108,20 +108,15 @@ To address the failure of models to render coherent textual content, we propose 
 The proposed loss is defined as:
 
 ```math
-\mathcal{L}_{\text{OCR}} = \lambda \cdot \mathcal{L}_{\text{recon}} + (1 - \lambda) \cdot \mathcal{L}_{\text{text}}
+\mathcal{L}_{\text{OCR}} = \lambda_1 \cdot \mathcal{L}_{\text{recon}} + \lambda_2 \cdot \mathcal{L}_{\text{text}}
 ```
 
 Where:
-- $ \mathcal{L}_{\text{recon}} $: Standard image reconstruction loss (e.g., L2 or perceptual loss).
-- $ \mathcal{L}_{\text{text}} $: Cross-entropy loss for OCR-detected text predictions.
-- $ \lambda $: Balancing weight (e.g., $ \lambda = 0.8 $) to prioritize text supervision.
+- $\mathcal{L}_{\text{recon}}$: Standard image reconstruction loss (e.g., L2 or perceptual loss).
+- $\mathcal{L}_{\text{text}}$: Cross-entropy loss for OCR-detected text predictions.
+- $\lambda_1, \lambda_2$: Balancing weight to prioritize text supervision.
 
-#### Implementation Details
-1. **OCR Detection**: Text regions are extracted from generated images using an OCR tool (e.g., Tesseract or PaddleOCR).
-2. **Text Loss**: The detected text content is compared against the ground-truth caption using a text-based loss, such as cross-entropy.
-3. **Balancing Factor**: The weight $\( \lambda \)$ controls the trade-off between image quality and text accuracy.
-
-The proposed loss encourages the model to render accurate text while maintaining overall image quality.
+The proposed loss intend to encourages the model to render accurate text while maintaining overall image quality.
 
 ---
 
@@ -130,7 +125,7 @@ The proposed loss encourages the model to render accurate text while maintaining
 While the current results indicate challenges with text masking strategies, the addition of the **OCR-based loss** offers a promising solution. Future work will focus on:
 1. Integrating the OCR-based loss into the training pipeline.
 2. Experimenting with different OCR tools for robust text extraction.
-3. Optimizing the balancing weight $ \lambda $ to achieve the desired trade-off.
+3. Optimizing the balancing weight $\lambda$ to achieve the desired trade-off.
 4. Expanding the dataset to include larger subsets of **MARIO10M** for better generalization.
 
 ---
