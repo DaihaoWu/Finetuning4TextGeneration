@@ -1,12 +1,12 @@
+Ablation Study: DALLE-2/PretrainedModels/
+Ablation Study: DALLE-2/Datasets/mscoco.parquet
 Datasets/MARIO-10M
-Datasets/MSCOCO
-Datasets/mscoco.parquet
-Datasets/clip-retrieval.sh
-PretrainedModels/
 Datasets/processed_mario_10m
-Datasets/enhanced_mario_10m
 Datasets/generation
 Datasets/MARIOEval
 diffuser_docs
 MaskTextSpotterV3
 Evaluation/src
+Evaluation/src
+apex
+csrc

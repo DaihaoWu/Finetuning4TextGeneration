@@ -1,11 +1,17 @@
-This file specify how the datasets for training the model is acquired
-
+## Datasets
 MARIO-10M:
     Obtained directly from Huggingface. Check the original tutorial: https://huggingface.co/datasets/JingyeChen22/TextDiffuser-MARIO-10M 
 
-MSCOCO: 600k image/text pairs
-    1. Use img2datset to generate a webdataset. Tutorial can be seen here: https://github.com/rom1504/img2dataset/blob/main/dataset_examples/mscoco.md
-        url for webdataset: https://github.com/webdataset/webdataset
-    2. ! This does not work! Use clip-retrieval to generate clip embeddings for the dataset. Checkout CLIP inference section in this https://github.com/rom1504/clip-retrieval 
-    instead
-    2. use Datasets/CLIPEmbeddings.py to generate .npy clip embedding files for image
+MARIOEval:
+    a comprehensive text rendering benchmark containing 10k prompts at [link](https://drive.google.com/file/d/1_tnWtOqC6S4_D4z8bqcBQ9xKPlsoPB0B/view)
+
+## Prepare the dataset
+MARIO-10M dataset require another process step before it can be use to fine-tuning stable diffussion, run the following command: (Modified the path in the script to safe in your desire directory)
+``` bash
+    python Datasets_converter.py
+```
+
+To generate our text-enhanced dataset, run: (Modified the path in the script to safe in your desire directory)
+``` bash
+    python Datasets_enhancement.py
+```

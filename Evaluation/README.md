@@ -1,1 +1,3 @@
 These Evaluation Scripts are modified from the TextDiffuser eval scripts: https://github.com/microsoft/unilm/tree/master/textdiffuser/eval. For usage, please refer to the orignal readme from this link.
+
+Note: [MaskTextSpotterV3](https://github.com/MhLiao/MaskTextSpotterV3/tree/master?tab=readme-ov-file) is used for OCR detection. However, since it uses an old CUDA version, to compile the NVIDIA apex package for newer CUDA version, you need to modify code in MaskTextSpotterV3/maskrcnn_benchmark/csrc/cuda and update the library from <THC/THC.h> to <ATen/ATen.h>.
