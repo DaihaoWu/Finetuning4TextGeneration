@@ -16,19 +16,6 @@ Extensive Work to be done:
 Despite initial challenges, this project contributes valuable insights and opens directions for further improvements in text-to-image generation tasks.
 
 ---
-## 🛠️ Usage
-Inference Baseline Images:
-open folder "StableDiffusion" ---> run Example_Run.py to generate baseline images
-
-Inference Lora-Finetuned Images:
-1. Follow the instruction on "https://github.com/huggingface/diffusers/blob/main/examples/text_to_image/README.md" to install the dependencies
-2. open the "diffuser_docs" folder ---> use "inference.py" to generate images
-
-If failed, then try below:
-
-copy and paste all the files inside the "diffuser_docs" folder to "diffusers\examples\text_to_image" and try running there.
-
----
 
 ## 📁 Dataset
 
@@ -40,10 +27,11 @@ For more details, refer to the original MARIO dataset paper [here](https://arxiv
 Implementation Details are contained in /Dataset/README.md.
 
 ---
+## 🛠️ Usage
 
-## 🔧 Implementation Details
+### Training 
 
-### Training Parameters:
+Parameters:
 - **Model**: Stable Diffusion v1.5 (Hugging Face Diffusers)
 - **Training Range**: First 50k of MARIO10M
 - **Batch Size**: 8
@@ -51,8 +39,7 @@ Implementation Details are contained in /Dataset/README.md.
 - **Learning Rate**: 1e-4 ~ 1e-6 (constant schedule)
 - **LoRA Rank**: 4
 - **Precision**: Mixed FP16
-
-### Training Script:
+  
 Run the following command for training:
 ```bash
 accelerate launch --mixed_precision="fp16" train_text_to_image_lora.py \
@@ -68,6 +55,23 @@ accelerate launch --mixed_precision="fp16" train_text_to_image_lora.py \
   --validation_prompt="a photo of a cat holding a sign saying hello world" \
   --report_to="wandb"
 ```
+
+### Inference
+Inference Baseline Images:
+open folder "StableDiffusion" ---> run Example_Run.py to generate baseline images
+
+Inference Lora-Finetuned Images:
+1. Follow the instruction on "https://github.com/huggingface/diffusers/blob/main/examples/text_to_image/README.md" to install the dependencies
+2. open the "diffuser_docs" folder ---> use "inference.py" to generate images
+
+If failed, then try below:
+
+copy and paste all the files inside the "diffuser_docs" folder to "diffusers\examples\text_to_image" and try running there.
+
+### Evaluation
+Please refer to the /Evaluation/README.md for more detail
+
+---
 
 ## 📸 Example Results
 Below are qualitative results on the prompt “a photo of a cat holding a sign saying hello world”:
