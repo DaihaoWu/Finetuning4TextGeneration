@@ -9,15 +9,14 @@ This repository contains the implementation and experiments for fine-tuning a St
 This project aims to improve text rendering capabilities in text-to-image generation models. We fine-tune **Stable Diffusion** using the MARIO10M dataset and explore methods like:
 - **LoRA Stable Diffusion** for lightweight fine-tuning.
 - **Text-Masking Techniques** to enhance focus on textual components.
+
+Extensive Work to be done:
 - Proposal of **OCR-based Loss** for stronger supervision of text generation.
 
 Despite initial challenges, this project contributes valuable insights and opens directions for further improvements in text-to-image generation tasks.
 
 ---
-
-## Installation
-
-## Usage
+## 🛠️ Usage
 Inference Baseline Images:
 open folder "StableDiffusion" ---> run Example_Run.py to generate baseline images
 
@@ -35,9 +34,10 @@ copy and paste all the files inside the "diffuser_docs" folder to "diffusers\exa
 
 We utilize the following datasets from **TextDiffuser**:
 - **MARIO10M**: First 50k samples used for fine-tuning.
-- **TMDBEval500**: A benchmark dataset for evaluating text rendering quality.
+- **MARIOEval/TMDBEval500**: A benchmark dataset for evaluating text rendering quality.
 
 For more details, refer to the original MARIO dataset paper [here](https://arxiv.org/abs/2307.09708).
+Implementation Details are contained in /Dataset/README.md.
 
 ---
 
