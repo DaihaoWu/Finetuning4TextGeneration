@@ -76,9 +76,9 @@ Please refer to the /Evaluation/README.md for more detail
 ## 📸 Example Results
 Below are qualitative results on the prompt “a photo of a cat holding a sign saying hello world”:
 <p align="center">
-    <img src="results/stable_diffusion_cat.png" alt="Stable Diffusion" width="30%">
-    <img src="results/lora_stable_diffusion_cat.png" alt="LoRA Stable Diffusion" width="30%">
-    <img src="results/text_enhanced_lora_cat.png" alt="Text-Enhanced LoRA" width="30%">
+    <img src="assets/baseline.jpg" alt="Stable Diffusion" width="30%">
+    <img src="assets/lora.jpg" alt="LoRA Stable Diffusion" width="30%">
+    <img src="assets/enhanced_lora.jpg" alt="Text-Enhanced LoRA" width="30%">
 </p>
 
 ---
