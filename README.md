@@ -107,6 +107,9 @@ To address the failure of models to render coherent textual content, we propose 
 
 The proposed loss is defined as:
 
+\mathcal{L}{\text{OCR}} = \lambda \cdot \mathcal{L}{\text{recon}} + (1 - \lambda) \cdot \mathcal{L}_{\text{text}}
+
+
 \[
 \mathcal{L}_{\text{OCR}} = \lambda \cdot \mathcal{L}_{\text{recon}} + (1 - \lambda) \cdot \mathcal{L}_{\text{text}}
 \]
