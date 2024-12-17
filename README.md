@@ -56,6 +56,13 @@ accelerate launch --mixed_precision="fp16" train_text_to_image_lora.py \
   --report_to="wandb"
 ```
 
+Example GIF examples along training:
+<p align="center">
+    <img src="gif_images/ezgif.com-animated-gif-maker.gif" width="30%">
+    <img src="gif_images/ezgif.com-animated-gif-maker (1).gif" width="30%">
+    <img src="gif_images/ezgif.com-animated-gif-maker (2).gif" width="30%">
+</p>
+
 ### Inference
 Inference Baseline Images:
 open folder "StableDiffusion" ---> run Example_Run.py to generate baseline images
