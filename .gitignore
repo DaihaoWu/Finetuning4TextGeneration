@@ -8,5 +8,5 @@ diffuser_docs
 MaskTextSpotterV3
 Evaluation/src
 Evaluation/src
-apex
-csrc
+./apex
+./cocoapi
