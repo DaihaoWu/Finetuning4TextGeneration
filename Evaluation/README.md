@@ -1,0 +1,1 @@
+These Evaluation Scripts are modified from the TextDiffuser eval scripts: https://github.com/microsoft/unilm/tree/master/textdiffuser/eval. For usage, please refer to the orignal readme from this link.
